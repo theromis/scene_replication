@@ -39,3 +39,5 @@ mesh = SubResource("CapsuleMesh_jab13")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40432, 2.04444)
+
+[connection signal="jump_ball" from="PlayerInput" to="." method="_on_player_input_jump_ball"]

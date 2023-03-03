@@ -6,6 +6,8 @@ const JUMP_VELOCITY = 4.5
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+signal jump_ball
+
 # Set by the authority, synchronized on spawn.
 @export var player := 1 :
 	set(id):
@@ -46,3 +48,7 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+
+
+func _on_player_input_jump_ball():
+	jump_ball.emit()

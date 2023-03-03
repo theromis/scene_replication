@@ -1,30 +1,29 @@
-[gd_scene load_steps=5 format=3 uid="uid://c6br8h3si2ypg"]
+[gd_scene load_steps=6 format=3 uid="uid://c6br8h3si2ypg"]
+
+[ext_resource type="Script" path="res://sphere.gd" id="1_qhw0p"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mp5c4"]
 friction = 0.0
-bounce = 1.0
+bounce = 0.25
 
 [sub_resource type="SphereMesh" id="SphereMesh_deuj3"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_h6jr2"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_q1o6k"]
-properties/0/path = NodePath(".:linear_velocity")
+properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/sync = true
-properties/1/path = NodePath(".:angular_velocity")
+properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/sync = true
-properties/2/path = NodePath(".:position")
-properties/2/spawn = true
-properties/2/sync = true
-properties/3/path = NodePath(".:rotation")
-properties/3/spawn = true
-properties/3/sync = true
 
 [node name="Sphere" type="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.42886, 0)
 physics_material_override = SubResource("PhysicsMaterial_mp5c4")
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("1_qhw0p")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_deuj3")
@@ -35,3 +34,5 @@ shape = SubResource("SphereShape3D_h6jr2")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_q1o6k")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

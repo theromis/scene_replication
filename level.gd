@@ -1,6 +1,10 @@
 extends Node3D
 
 const SPAWN_RANDOM := 5.0
+var Player = preload("res://player.tscn")
+var Sphere = preload("res://sphere.tscn")
+
+var sphere_count = 0
 
 func _ready():
 	# We only need to spawn players on the server.
@@ -27,17 +31,26 @@ func _exit_tree():
 
 
 func add_player(id: int):
-	var character = preload("res://player.tscn").instantiate()
+	var character = Player.instantiate()
 	# Set player id.
 	character.player = id
 	# Randomize character position.
 	var pos := Vector2.from_angle(randf() * 2 * PI)
-	character.position = Vector3(pos.x * SPAWN_RANDOM * randf(), 0, pos.y * SPAWN_RANDOM * randf())
+	character.position = Vector3(pos.x * SPAWN_RANDOM * randf(), 1.0, pos.y * SPAWN_RANDOM * randf())
 	character.name = str(id)
 	$Players.add_child(character, true)
 
+	var sphere = Sphere.instantiate()
+	#instantiate in front and up of the player
+	sphere.position = character.position + Vector3.FORWARD + Vector3.UP
+	$Objects.add_child(sphere, true)
+	character.jump_ball.connect(_on_jump_ball.bind(sphere))
 
 func del_player(id: int):
-	if not $Players.has_node(str(id)):
-		return
-	$Players.get_node(str(id)).queue_free()
+	var character := $Players.get_node_or_null(str(id))
+	if character:
+		character.jump_ball.disconnect(_on_jump_ball)
+		character.queue_free()
+
+func _on_jump_ball(sphere):
+	sphere.jump()
