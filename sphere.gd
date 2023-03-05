@@ -8,7 +8,7 @@ func despawn():
 func jump():
 	linear_velocity = Vector3.UP * 10.0
 
-func _on_body_entered(body):
+func _on_body_entered(_body):
 	pass
 #	var players_count = $"../../Players".get_child_count()
 #	print("_on_body_entered: ", multiplayer.is_server(), " | ", players_count, " | ", body)

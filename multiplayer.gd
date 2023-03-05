@@ -1,6 +1,7 @@
 extends Node
 
 const PORT = 4433
+var Scene := preload("res://level.tscn")
 
 func _ready():
 	# Start paused
@@ -46,7 +47,7 @@ func start_game():
 	# Only change level on the server.
 	# Clients will instantiate the level via the spawner.
 	if multiplayer.is_server():
-		change_level.call_deferred(load("res://level.tscn"))
+		change_level.call_deferred(Scene)
 
 
 # Call this function deferred and only on the main authority (server).
