@@ -11,7 +11,7 @@ func _ready():
 	if not multiplayer.is_server():
 		return
 
-	multiplayer.peer_connected.connect(add_player)
+	multiplayer.peer_connected.connect(_on_network_peer_connected)
 	multiplayer.peer_disconnected.connect(del_player)
 
 	# Spawn already connected players
@@ -26,8 +26,18 @@ func _ready():
 func _exit_tree():
 	if not multiplayer.is_server():
 		return
-	multiplayer.peer_connected.disconnect(add_player)
+	multiplayer.peer_connected.disconnect(_on_network_peer_connected)
 	multiplayer.peer_disconnected.disconnect(del_player)
+
+
+@rpc
+func _check_client_version(_host_client_version: String) -> void:
+	print("_check_client_version level")
+
+
+func _on_network_peer_connected(peer_id: int) -> void:
+	_check_client_version.rpc_id(peer_id, "123")
+	add_player(peer_id)
 
 
 func add_player(id: int):

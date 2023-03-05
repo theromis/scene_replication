@@ -11,8 +11,7 @@ func _exit_tree() -> void:
 
 @rpc
 func _check_client_version(_host_client_version: String) -> void:
-	pass
+	print("_check_client_version autoload")
 
 func _on_network_peer_connected(peer_id: int) -> void:
-#	await get_tree().create_timer(1).timeout
 	_check_client_version.rpc_id(peer_id, "123")
